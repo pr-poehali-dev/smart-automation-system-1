@@ -17,27 +17,26 @@ export default function Faq() {
   const { t } = useLang()
 
   return (
-    <section id="faq" className="my-20">
-      <div className="card p-8 md:p-10 shadow-lg">
-        <h2 className="text-black dark:text-white mb-6 text-3xl md:text-4xl lg:text-5xl font-medium leading-tight">
-          {t("faq_title1")}
-          <span className="block text-[#7A7FEE]">{t("faq_title2")}</span>
+    <section id="faq" className="my-8">
+      <div className="card p-3 shadow-sm max-w-2xl mx-auto">
+        <h2 className="text-black dark:text-white mb-1 text-sm font-semibold leading-tight text-center">
+          {t("faq_title1")}{" "}
+          <span className="text-[#7A7FEE]">{t("faq_title2")}</span>
         </h2>
-        <p className="mb-8 max-w-2xl text-gray-700 dark:text-gray-300">{t("faq_desc")}</p>
 
-        <div className="space-y-4">
+        <div className="divide-y divide-gray-200 dark:divide-gray-800">
           {faqKeys.map((faq, i) => (
-            <div key={i} className="border-b pb-4 border-gray-300 dark:border-gray-700">
+            <div key={i}>
               <button
                 onClick={() => setOpenItem(openItem === i ? null : i)}
-                className="flex justify-between items-center w-full text-left py-2 font-medium text-black dark:text-white hover:text-[#7A7FEE] dark:hover:text-[#7A7FEE] transition-colors"
+                className="flex justify-between items-center w-full text-left py-1.5 text-[11px] font-medium text-black dark:text-white hover:text-[#7A7FEE] dark:hover:text-[#7A7FEE] transition-colors gap-2"
                 aria-expanded={openItem === i}
               >
-                <span className="font-medium">{t(faq.q)}</span>
-                <ChevronDown className={`w-5 h-5 transition-transform ${openItem === i ? "rotate-180 text-[#7A7FEE]" : ""}`} />
+                <span className="leading-tight">{t(faq.q)}</span>
+                <ChevronDown className={`w-3 h-3 shrink-0 transition-transform ${openItem === i ? "rotate-180 text-[#7A7FEE]" : ""}`} />
               </button>
               {openItem === i && (
-                <div className="mt-2 text-gray-700 dark:text-gray-300">{t(faq.a)}</div>
+                <div className="pb-1.5 text-[10px] text-gray-600 dark:text-gray-400 leading-relaxed">{t(faq.a)}</div>
               )}
             </div>
           ))}

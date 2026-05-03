@@ -39,42 +39,42 @@ export default function Services() {
   ]
 
   return (
-    <section id="services" className="my-20">
-      <h2 className="text-black dark:text-white mb-6 text-3xl md:text-4xl lg:text-5xl font-medium leading-tight">
+    <section id="services" className="my-10">
+      <h2 className="text-black dark:text-white mb-3 text-xl md:text-2xl font-medium leading-tight">
         {t("services_title1")}
-        <span className="block text-[#7A7FEE]">{t("services_title2")}</span>
+        <span className="text-[#7A7FEE]"> {t("services_title2")}</span>
       </h2>
-      <p className="mb-12 max-w-2xl text-gray-700 dark:text-gray-300">{t("services_desc")}</p>
+      <p className="mb-6 max-w-xl text-sm text-gray-700 dark:text-gray-300">{t("services_desc")}</p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
         {services.map((s, i) => (
-          <div key={i} className="card overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+          <div key={i} className="card overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
             <div className="relative aspect-[16/9] overflow-hidden bg-gray-100 dark:bg-gray-800">
               <img src={s.image} alt={s.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
-              <div className="absolute top-4 left-4 bg-[#7A7FEE] w-12 h-12 rounded-full flex items-center justify-center shadow-lg">
-                <Icon name={s.icon} size={22} className="text-white" />
+              <div className="absolute top-2 left-2 bg-[#7A7FEE] w-7 h-7 rounded-full flex items-center justify-center shadow">
+                <Icon name={s.icon} size={13} className="text-white" />
               </div>
             </div>
-            <div className="p-6">
-              <h3 className="text-xl font-semibold mb-2 text-black dark:text-white">{s.title}</h3>
-              <p className="text-gray-700 dark:text-gray-300">{s.desc}</p>
+            <div className="p-3">
+              <h3 className="text-sm font-semibold mb-1 text-black dark:text-white">{s.title}</h3>
+              <p className="text-xs text-gray-700 dark:text-gray-300 line-clamp-2">{s.desc}</p>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="card p-8 shadow-md">
-        <h3 className="text-2xl font-semibold text-black dark:text-white mb-8 text-center">{t("how_title")}</h3>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="card p-4 shadow-sm">
+        <h3 className="text-base font-semibold text-black dark:text-white mb-4 text-center">{t("how_title")}</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {steps.map((s, i) => (
             <div key={i} className="flex flex-col items-center text-center relative">
-              <div className="w-12 h-12 rounded-full bg-[#7A7FEE]/10 flex items-center justify-center mb-3">
-                <span className="text-[#7A7FEE] font-bold text-sm">{s.step}</span>
+              <div className="w-7 h-7 rounded-full bg-[#7A7FEE]/10 flex items-center justify-center mb-1.5">
+                <span className="text-[#7A7FEE] font-bold text-[10px]">{s.step}</span>
               </div>
-              <h4 className="font-semibold text-black dark:text-white mb-1">{s.title}</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400">{s.desc}</p>
+              <h4 className="font-semibold text-black dark:text-white text-xs mb-0.5">{s.title}</h4>
+              <p className="text-[10px] text-gray-600 dark:text-gray-400 line-clamp-2">{s.desc}</p>
               {i < steps.length - 1 && (
-                <div className="hidden md:block absolute top-6 left-[calc(50%+24px)] w-[calc(100%-48px)] h-px bg-[#7A7FEE]/30" />
+                <div className="hidden md:block absolute top-3.5 left-[calc(50%+14px)] w-[calc(100%-28px)] h-px bg-[#7A7FEE]/30" />
               )}
             </div>
           ))}

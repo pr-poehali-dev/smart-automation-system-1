@@ -29,37 +29,36 @@ export default function Projects() {
   ]
 
   return (
-    <section id="projects" className="my-20">
-      <h2 className="text-black dark:text-white mb-6 text-3xl md:text-4xl lg:text-5xl font-medium leading-tight">
-        {t("projects_title1")}
-        <span className="block text-[#7A7FEE]">{t("projects_title2")}</span>
+    <section id="projects" className="my-12">
+      <h2 className="text-black dark:text-white mb-2 text-xl md:text-2xl font-medium leading-tight text-center">
+        {t("projects_title1")}{" "}
+        <span className="text-[#7A7FEE]">{t("projects_title2")}</span>
       </h2>
-      <p className="mb-12 max-w-2xl text-gray-700 dark:text-gray-300">{t("projects_desc")}</p>
+      <p className="mb-5 max-w-md mx-auto text-center text-xs text-gray-700 dark:text-gray-300">{t("projects_desc")}</p>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 max-w-2xl mx-auto">
         {projects.map((project, i) => (
-          <div key={i} className="card overflow-hidden shadow-lg transform transition-transform duration-300 hover:scale-[1.02] cursor-pointer">
+          <div key={i} className="rounded-xl bg-white dark:bg-[#1a1a1a] border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer">
             <div className="relative overflow-hidden">
-              <img src={project.mainImage} alt={project.title} className="w-full h-48 object-cover" />
-              <div className="absolute top-3 left-3 flex gap-2">
-                <span className="bg-[#7A7FEE] text-white text-xs font-medium px-2 py-1 rounded-full">{project.platform}</span>
-                <span className="bg-black/60 text-white text-xs font-medium px-2 py-1 rounded-full">{project.badge}</span>
+              <img src={project.mainImage} alt={project.title} className="w-full h-24 object-cover" />
+              <div className="absolute top-1.5 left-1.5 flex gap-1">
+                <span className="bg-[#7A7FEE] text-white text-[8px] font-medium px-1.5 py-0.5 rounded-full">{project.platform}</span>
               </div>
             </div>
-            <div className="p-4 md:p-6">
-              <h3 className="text-base font-semibold text-black dark:text-white">{project.title}</h3>
-              <p className="text-gray-700 dark:text-gray-300 text-sm mt-2 mb-4">{project.description}</p>
-              <div className="inline-flex items-center text-[#7A7FEE] text-sm font-medium group">
+            <div className="p-2.5">
+              <h3 className="text-xs font-semibold text-black dark:text-white leading-tight line-clamp-2">{project.title}</h3>
+              <p className="text-gray-600 dark:text-gray-400 text-[10px] mt-1 line-clamp-2">{project.description}</p>
+              <div className="inline-flex items-center text-[#7A7FEE] text-[10px] font-medium group mt-1.5">
                 {t("see_more")}
-                <Icon name="ArrowUpRight" size={16} className="ml-1 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                <Icon name="ArrowUpRight" size={10} className="ml-0.5 group-hover:translate-x-0.5 transition-transform" />
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      <div className="flex justify-center mt-8">
-        <a href="/dashboard" className="btn-primary">{t("projects_cta")}</a>
+      <div className="flex justify-center mt-4">
+        <a href="/dashboard" className="px-4 py-1.5 rounded-md bg-[#7A7FEE] text-white text-xs font-semibold hover:bg-opacity-90 transition-colors">{t("projects_cta")}</a>
       </div>
     </section>
   )
