@@ -5,7 +5,7 @@ import requests
 
 
 def handler(event: dict, context) -> dict:
-    """Генерация изображения через Hugging Face Stable Diffusion XL. v5"""
+    """Генерация изображения через Hugging Face Stable Diffusion XL. v6"""
     if event.get('httpMethod') == 'OPTIONS':
         return {
             'statusCode': 200,
