@@ -1,5 +1,3 @@
-import ContactFormButton from "./ContactFormButton"
-
 export default function Hero() {
   return (
     <section id="hero" className="card my-8 relative overflow-hidden shadow-md">

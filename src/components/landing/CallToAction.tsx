@@ -1,5 +1,3 @@
-import ContactFormButton from "./ContactFormButton"
-
 export default function CallToAction() {
   return (
     <section id="contact" className="card my-20 relative overflow-hidden shadow-md">
@@ -16,10 +14,9 @@ export default function CallToAction() {
             Загрузите первое фото и убедитесь в качестве сами — без рисков и обязательств.
           </p>
           <div className="flex flex-wrap gap-3">
-            <a href="#" className="btn-primary">
+            <a href="/dashboard" className="btn-primary">
               Создать аккаунт бесплатно
             </a>
-            <ContactFormButton />
           </div>
         </div>
 
