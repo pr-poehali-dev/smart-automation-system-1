@@ -85,6 +85,7 @@ def handler(event: dict, context) -> dict:
     )
 
     if response.status_code != 200:
+        print(f"HF error {response.status_code}: {response.text[:1000]}")
         return {
             'statusCode': 500,
             'headers': {'Access-Control-Allow-Origin': '*'},
