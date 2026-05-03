@@ -1,3 +1,9 @@
-# smart-automation-system-1
+# NeuralWorks
 
-Initial repository setup for pr-poehali-dev/smart-automation-system-1
+![Preview](https://cdn.poehali.dev/templates/ai-agency-ru/cover.jpg)
+
+Профессиональный лендинг для AI-агентства с портфолио проектов. Поддержка тёмной и светлой темы, секции кейсов клиентов, описание услуг и FAQ. Создан для презентации технологических решений и привлечения корпоративных заказчиков.
+
+```
+"tags": ["landing", "agency", "dark", "light", "ai", "testimonials"]
+```
