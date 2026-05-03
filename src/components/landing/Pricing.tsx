@@ -2,7 +2,7 @@ import Icon from "@/components/ui/icon"
 
 const packages = [
   {
-    sestertius: 50,
+    sestertius: 10,
     price: "$0",
     label: "Бонус",
     description: "При регистрации",
@@ -91,7 +91,7 @@ export default function Pricing() {
             <Icon name="Gift" size={22} className="text-[#7A7FEE]" />
           </div>
           <div>
-            <div className="font-semibold text-black dark:text-white text-lg">50 Sestertius бесплатно</div>
+            <div className="font-semibold text-black dark:text-white text-lg">10 Sestertius бесплатно</div>
             <div className="text-sm text-gray-500 dark:text-gray-400">Начисляются автоматически при регистрации — кредитная карта не нужна</div>
           </div>
         </div>

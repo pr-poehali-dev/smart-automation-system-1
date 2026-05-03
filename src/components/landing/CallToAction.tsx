@@ -8,7 +8,7 @@ export default function CallToAction() {
             <span className="text-[#7A7FEE] dark:text-[#7A7FEE]">уже сегодня</span>
           </h2>
           <p className="my-6 text-sm md:text-base max-w-md text-gray-700 dark:text-gray-300">
-            Зарегистрируйтесь и получите <strong>50 Пиастр бесплатно</strong> — этого хватит на первые 50 генераций. Кредитная карта не нужна.
+            Зарегистрируйтесь и получите <strong>10 Sestertius бесплатно</strong> — попробуйте первые генерации без оплаты. Кредитная карта не нужна.
           </p>
           <p className="mb-6 text-sm md:text-base max-w-md text-gray-700 dark:text-gray-300">
             Загрузите первое фото и убедитесь в качестве сами — без рисков и обязательств.

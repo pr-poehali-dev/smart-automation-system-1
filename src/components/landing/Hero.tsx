@@ -23,8 +23,8 @@ export default function Hero() {
           </div>
           <div className="flex items-center gap-6 mt-8">
             <div className="text-center">
-              <div className="text-2xl font-bold text-black dark:text-white">50</div>
-              <div className="text-xs text-gray-500 dark:text-gray-400">Пиастр в подарок</div>
+              <div className="text-2xl font-bold text-black dark:text-white">10</div>
+              <div className="text-xs text-gray-500 dark:text-gray-400">Sestertius в подарок</div>
             </div>
             <div className="w-px h-10 bg-gray-200 dark:bg-gray-700" />
             <div className="text-center">

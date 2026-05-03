@@ -26,7 +26,7 @@ export default function Dashboard() {
   const [selectedConcept, setSelectedConcept] = useState<string>("white-bg")
   const [selectedType, setSelectedType] = useState<ContentType>("photo")
   const [description, setDescription] = useState("")
-  const [balance] = useState(50)
+  const [balance] = useState(10)
   const [generatedImages] = useState([
     "/portfolio-images/ecommerce-interface-1.jpg",
     "/portfolio-images/ai-platform-1.jpg",
