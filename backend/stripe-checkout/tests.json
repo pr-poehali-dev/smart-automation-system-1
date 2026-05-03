@@ -1,0 +1,23 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Invalid plan",
+      "method": "POST",
+      "path": "/",
+      "body": {"plan_id": "invalid"},
+      "expectedStatus": 400
+    },
+    {
+      "name": "Method not allowed",
+      "method": "GET",
+      "path": "/",
+      "expectedStatus": 405
+    }
+  ]
+}

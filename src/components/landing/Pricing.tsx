@@ -1,5 +1,7 @@
+import { useState } from "react"
 import Icon from "@/components/ui/icon"
 import { useLang } from "@/lib/LangContext"
+import func2url from "../../../backend/func2url.json"
 
 type Plan = {
   id: string
@@ -79,6 +81,35 @@ const plans: Plan[] = [
 
 export default function Pricing() {
   const { t } = useLang()
+  const [loadingPlan, setLoadingPlan] = useState<string | null>(null)
+  const [error, setError] = useState<string | null>(null)
+
+  const handleCheckout = async (planId: string) => {
+    setLoadingPlan(planId)
+    setError(null)
+    try {
+      const origin = window.location.origin
+      const res = await fetch(func2url["stripe-checkout"], {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          plan_id: planId,
+          success_url: `${origin}/success`,
+          cancel_url: `${origin}/cancel`,
+        }),
+      })
+      const data = await res.json()
+      if (data.checkout_url) {
+        window.location.href = data.checkout_url
+      } else {
+        setError(data.error || "Ошибка создания платежа")
+        setLoadingPlan(null)
+      }
+    } catch (e) {
+      setError("Ошибка подключения. Попробуйте ещё раз.")
+      setLoadingPlan(null)
+    }
+  }
 
   return (
     <section id="pricing" className="my-20">
@@ -200,9 +231,10 @@ export default function Pricing() {
             </ul>
 
             {/* CTA */}
-            <a
-              href="/dashboard"
-              className={`w-full py-3.5 rounded-xl text-sm font-semibold text-center transition-all ${
+            <button
+              onClick={() => handleCheckout(plan.id)}
+              disabled={loadingPlan !== null}
+              className={`w-full py-3.5 rounded-xl text-sm font-semibold text-center transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-wait ${
                 plan.dark
                   ? "bg-[#7A7FEE] text-white hover:bg-[#9B8FFF] shadow-lg shadow-[#7A7FEE]/40"
                   : plan.highlight
@@ -210,11 +242,27 @@ export default function Pricing() {
                   : "bg-black dark:bg-white text-white dark:text-black hover:bg-opacity-90"
               }`}
             >
-              Выбрать {plan.name}
-            </a>
+              {loadingPlan === plan.id ? (
+                <>
+                  <Icon name="Loader2" size={16} className="animate-spin" />
+                  Подключение...
+                </>
+              ) : (
+                <>
+                  <Icon name="CreditCard" size={16} />
+                  Купить {plan.name}
+                </>
+              )}
+            </button>
           </div>
         ))}
       </div>
+
+      {error && (
+        <div className="max-w-md mx-auto mt-6 px-4 py-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm rounded-xl text-center">
+          {error}
+        </div>
+      )}
 
       {/* Trust signals */}
       <div className="flex flex-wrap items-center justify-center gap-6 mt-10 text-sm text-gray-500 dark:text-gray-400">
