@@ -2,10 +2,21 @@ import os
 import json
 import base64
 import requests
+from io import BytesIO
+from PIL import Image
+
+
+def resize_image(image_b64: str, max_size: int = 1024) -> bytes:
+    img_bytes = base64.b64decode(image_b64)
+    img = Image.open(BytesIO(img_bytes)).convert("RGB")
+    img.thumbnail((max_size, max_size), Image.LANCZOS)
+    out = BytesIO()
+    img.save(out, format="JPEG", quality=90)
+    return out.getvalue()
 
 
 def handler(event: dict, context) -> dict:
-    """Генерация изображения через Hugging Face Stable Diffusion XL. v7"""
+    """Генерация изображения на основе загруженного фото товара через HuggingFace. v8"""
     if event.get('httpMethod') == 'OPTIONS':
         return {
             'statusCode': 200,
@@ -19,19 +30,18 @@ def handler(event: dict, context) -> dict:
         }
 
     body = json.loads(event.get('body') or '{}')
-    prompt = body.get('prompt', 'product photo, white background, professional')
+    prompt = body.get('prompt', 'product photo')
     concept = body.get('concept', 'white-bg')
-    content_type = body.get('content_type', 'photo')
+    image_b64 = body.get('image', '')
 
     concept_prompts = {
-        'white-bg': 'product photo on pure white background, professional studio lighting, high quality',
-        'lifestyle': 'product in lifestyle setting, natural environment, modern interior, beautiful lighting',
-        'studio': 'product in professional photo studio, dramatic lighting, shadows, commercial photography',
-        'gradient': 'product on smooth gradient background, vibrant colors, modern aesthetic',
+        'white-bg': 'on pure white background, professional studio lighting, commercial product photo, high quality',
+        'lifestyle': 'in lifestyle setting, natural environment, modern interior, beautiful lighting',
+        'studio': 'in professional photo studio, dramatic lighting, shadows, commercial photography',
+        'gradient': 'on smooth gradient background, vibrant colors, modern aesthetic',
     }
 
     base_concept = concept_prompts.get(concept, concept_prompts['white-bg'])
-    full_prompt = f"{prompt}, {base_concept}, 4k, photorealistic, detailed"
 
     hf_token = os.environ.get('HUGGINGFACE_API_TOKEN', '').strip()
     if not hf_token:
@@ -40,7 +50,25 @@ def handler(event: dict, context) -> dict:
             'headers': {'Access-Control-Allow-Origin': '*'},
             'body': json.dumps({'error': 'HUGGINGFACE_API_TOKEN not set'})
         }
-    api_url = "https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell"
+
+    if image_b64:
+        # img2img через FLUX Kontext — сохраняет продукт, меняет фон/стиль
+        img_bytes = resize_image(image_b64)
+        img_resized_b64 = base64.b64encode(img_bytes).decode('utf-8')
+        full_prompt = f"This exact product {base_concept}, keep the product identical, {prompt}"
+        api_url = "https://router.huggingface.co/fal-ai/flux-kontext/dev"
+        payload = {
+            "prompt": full_prompt,
+            "image_url": f"data:image/jpeg;base64,{img_resized_b64}",
+        }
+    else:
+        # text2img fallback
+        full_prompt = f"{prompt}, {base_concept}, 4k, photorealistic, detailed"
+        api_url = "https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell"
+        payload = {
+            "inputs": full_prompt,
+            "parameters": {"num_inference_steps": 4, "width": 1024, "height": 1024}
+        }
 
     response = requests.post(
         api_url,
@@ -48,15 +76,7 @@ def handler(event: dict, context) -> dict:
             "Authorization": f"Bearer {hf_token}",
             "Content-Type": "application/json"
         },
-        json={
-            "inputs": full_prompt,
-            "parameters": {
-                "num_inference_steps": 30,
-                "guidance_scale": 7.5,
-                "width": 1024,
-                "height": 1024
-            }
-        },
+        json=payload,
         timeout=120
     )
 
@@ -67,14 +87,29 @@ def handler(event: dict, context) -> dict:
             'body': json.dumps({'error': f'HF API error: {response.status_code}', 'detail': response.text[:500]})
         }
 
-    image_bytes = response.content
-    image_b64 = base64.b64encode(image_bytes).decode('utf-8')
+    # fal-ai возвращает JSON с URL, hf-inference возвращает байты
+    content_type = response.headers.get('Content-Type', '')
+    if 'application/json' in content_type:
+        data = response.json()
+        # fal-ai формат: {"images": [{"url": "..."}]}
+        img_url = data.get('images', [{}])[0].get('url', '')
+        if img_url:
+            img_response = requests.get(img_url, timeout=60)
+            image_b64_out = base64.b64encode(img_response.content).decode('utf-8')
+        else:
+            return {
+                'statusCode': 500,
+                'headers': {'Access-Control-Allow-Origin': '*'},
+                'body': json.dumps({'error': 'No image in response', 'detail': str(data)[:300]})
+            }
+    else:
+        image_b64_out = base64.b64encode(response.content).decode('utf-8')
 
     return {
         'statusCode': 200,
         'headers': {'Access-Control-Allow-Origin': '*'},
         'body': json.dumps({
-            'image': image_b64,
+            'image': image_b64_out,
             'format': 'jpeg',
             'prompt': full_prompt
         })

@@ -53,11 +53,28 @@ export default function Dashboard() {
     setStep("concept")
   }
 
+  const getImageBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => {
+        const result = reader.result as string
+        resolve(result.split(',')[1])
+      }
+      reader.onerror = reject
+      reader.readAsDataURL(file)
+    })
+  }
+
   const handleGenerate = async () => {
     setStep("generating")
     setGenerateError(null)
     setGeneratedImages([])
     try {
+      let imageB64 = ""
+      if (uploadedImageFile.current) {
+        imageB64 = await getImageBase64(uploadedImageFile.current)
+      }
+
       const results: string[] = []
       for (let i = 0; i < 3; i++) {
         const res = await fetch(func2url["generate-image"], {
@@ -67,6 +84,7 @@ export default function Dashboard() {
             prompt: description || "product photo",
             concept: selectedConcept,
             content_type: selectedType,
+            image: imageB64,
           }),
         })
         const data = await res.json()
