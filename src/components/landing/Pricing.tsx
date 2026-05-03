@@ -1,114 +1,148 @@
 import Icon from "@/components/ui/icon"
 
-const plans = [
+const packages = [
   {
-    name: "Старт",
-    price: "Бесплатно",
-    piastras: "50 Пиастр",
-    description: "Подарок при регистрации — попробуйте без оплаты",
-    features: [
-      "50 Пиастр на счёт сразу",
-      "AI-фотографии товаров",
-      "Базовая инфографика",
-      "Форматы Mercado Libre",
-      "Скачивание в JPG/PNG",
-    ],
-    cta: "Начать бесплатно",
+    sestertius: 50,
+    price: "$0",
+    label: "Бонус",
+    description: "При регистрации",
     highlight: false,
+    badge: "Бесплатно",
+    cta: "Получить бонус",
+    perUnit: null,
   },
   {
-    name: "Продавец",
+    sestertius: 100,
+    price: "$9",
+    label: "",
+    description: "",
+    highlight: false,
+    badge: null,
+    cta: "Купить",
+    perUnit: "$0.09 / St",
+  },
+  {
+    sestertius: 130,
+    price: "$15",
+    label: "",
+    description: "",
+    highlight: false,
+    badge: null,
+    cta: "Купить",
+    perUnit: "$0.115 / St",
+  },
+  {
+    sestertius: 250,
     price: "$19",
-    piastras: "500 Пиастр",
-    period: "/ месяц",
-    description: "Для активных продавцов на 1–2 платформах",
-    features: [
-      "500 Пиастр в месяц",
-      "AI try-on примерка",
-      "AI-видео ролики",
-      "Форматы Amazon + ML",
-      "Редактор текстов",
-      "Bulk-загрузка до 50 SKU",
-    ],
-    cta: "Выбрать план",
+    label: "",
+    description: "",
     highlight: true,
+    badge: "Популярный",
+    cta: "Купить",
+    perUnit: "$0.076 / St",
   },
   {
-    name: "Бизнес",
-    price: "$79",
-    piastras: "2500 Пиастр",
-    period: "/ месяц",
-    description: "Для брендов и агентств с большим каталогом",
-    features: [
-      "2500 Пиастр в месяц",
-      "Все типы контента",
-      "Bulk без ограничений",
-      "Приоритетная генерация",
-      "API-доступ",
-      "Персональный менеджер",
-    ],
-    cta: "Связаться с нами",
+    sestertius: 500,
+    price: "$35",
+    label: "",
+    description: "",
     highlight: false,
+    badge: null,
+    cta: "Купить",
+    perUnit: "$0.07 / St",
+  },
+  {
+    sestertius: 750,
+    price: "$49",
+    label: "",
+    description: "",
+    highlight: false,
+    badge: null,
+    cta: "Купить",
+    perUnit: "$0.065 / St",
+  },
+  {
+    sestertius: 1600,
+    price: "$99",
+    label: "Максимум",
+    description: "Лучшая цена",
+    highlight: false,
+    badge: "Выгоднее всего",
+    cta: "Купить",
+    perUnit: "$0.062 / St",
   },
 ]
 
 export default function Pricing() {
   return (
     <section id="pricing" className="my-20">
-      <h2 className="text-black dark:text-white mb-6 text-3xl md:text-4xl lg:text-5xl font-medium leading-tight">
-        Простые
-        <span className="block text-[#7A7FEE] dark:text-[#7A7FEE]">тарифы</span>
+      <h2 className="text-black dark:text-white mb-4 text-3xl md:text-4xl lg:text-5xl font-medium leading-tight">
+        Пополнение
+        <span className="block text-[#7A7FEE]">Sestertius</span>
       </h2>
-      <p className="mb-4 max-w-2xl text-gray-700 dark:text-gray-300">
-        Оплачивайте внутренней валютой — <strong>Пиастрой</strong>. 1 Пиастра = 1 генерация контента. Неиспользованные Пиастры переносятся на следующий месяц.
+      <p className="mb-10 max-w-2xl text-gray-700 dark:text-gray-300">
+        Покупайте токены один раз — без подписки и срока действия. Чем больше пакет, тем выгоднее цена за единицу.
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10">
-        {plans.map((plan) => (
+      {/* Bonus card */}
+      <div className="card p-6 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4 border-2 border-dashed border-[#7A7FEE]/40">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-full bg-[#7A7FEE]/10 flex items-center justify-center shrink-0">
+            <Icon name="Gift" size={22} className="text-[#7A7FEE]" />
+          </div>
+          <div>
+            <div className="font-semibold text-black dark:text-white text-lg">50 Sestertius бесплатно</div>
+            <div className="text-sm text-gray-500 dark:text-gray-400">Начисляются автоматически при регистрации — кредитная карта не нужна</div>
+          </div>
+        </div>
+        <a
+          href="/dashboard"
+          className="shrink-0 px-6 py-2.5 bg-[#7A7FEE] text-white rounded-lg text-sm font-medium hover:bg-opacity-90 transition-colors"
+        >
+          Зарегистрироваться
+        </a>
+      </div>
+
+      {/* Packages grid */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        {packages.filter(p => p.sestertius !== 50).map((pkg) => (
           <div
-            key={plan.name}
-            className={`card p-6 md:p-8 shadow-md flex flex-col ${plan.highlight ? "ring-2 ring-[#7A7FEE] relative" : ""}`}
+            key={pkg.sestertius}
+            className={`card p-4 flex flex-col items-center text-center relative transition-shadow hover:shadow-lg ${
+              pkg.highlight ? "ring-2 ring-[#7A7FEE]" : ""
+            }`}
           >
-            {plan.highlight && (
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#7A7FEE] text-white text-xs font-semibold px-4 py-1 rounded-full">
-                Популярный
+            {pkg.badge && (
+              <div className={`absolute -top-2.5 left-1/2 -translate-x-1/2 text-white text-[10px] font-semibold px-2.5 py-0.5 rounded-full whitespace-nowrap ${
+                pkg.badge === "Выгоднее всего" ? "bg-emerald-500" : "bg-[#7A7FEE]"
+              }`}>
+                {pkg.badge}
               </div>
             )}
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold text-black dark:text-white mb-1">{plan.name}</h3>
-              <div className="flex items-baseline gap-1 mb-1">
-                <span className="text-3xl font-bold text-black dark:text-white">{plan.price}</span>
-                {plan.period && <span className="text-gray-500 dark:text-gray-400 text-sm">{plan.period}</span>}
-              </div>
-              <div className="text-[#7A7FEE] font-medium text-sm mb-2">{plan.piastras}</div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">{plan.description}</p>
-            </div>
 
-            <ul className="space-y-3 flex-1 mb-6">
-              {plan.features.map((f, i) => (
-                <li key={i} className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
-                  <Icon name="Check" size={16} className="text-[#7A7FEE] shrink-0" />
-                  {f}
-                </li>
-              ))}
-            </ul>
+            <div className="text-2xl font-bold text-black dark:text-white mt-1">{pkg.sestertius}</div>
+            <div className="text-xs text-[#7A7FEE] font-medium mb-1">Sestertius</div>
+            <div className="text-xl font-semibold text-black dark:text-white mb-1">{pkg.price}</div>
+            {pkg.perUnit && (
+              <div className="text-[11px] text-gray-400 mb-3">{pkg.perUnit}</div>
+            )}
 
             <a
-              href="#contact"
-              className={`w-full text-center py-2.5 rounded-lg font-medium text-sm transition-colors ${
-                plan.highlight
+              href="/dashboard"
+              className={`w-full py-1.5 rounded-lg text-xs font-medium transition-colors mt-auto ${
+                pkg.highlight
                   ? "bg-[#7A7FEE] text-white hover:bg-opacity-90"
-                  : "border border-[#7A7FEE] text-[#7A7FEE] hover:bg-[#7A7FEE]/10"
+                  : "border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-[#7A7FEE] hover:text-[#7A7FEE]"
               }`}
             >
-              {plan.cta}
+              {pkg.cta}
             </a>
           </div>
         ))}
       </div>
 
       <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
-        Можно докупить Пиастры в любой момент · Без автопродления · Отмена в 1 клик
+        Токены не сгорают · Без подписки · Пополняйте в любой момент
       </p>
     </section>
   )
