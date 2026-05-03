@@ -16,7 +16,7 @@ def resize_image(image_b64: str, max_size: int = 1024) -> bytes:
 
 
 def handler(event: dict, context) -> dict:
-    """Генерация изображения на основе загруженного фото товара через HuggingFace. v8"""
+    """Генерация изображения на основе загруженного фото товара через HuggingFace. v9"""
     if event.get('httpMethod') == 'OPTIONS':
         return {
             'statusCode': 200,
@@ -52,18 +52,22 @@ def handler(event: dict, context) -> dict:
         }
 
     if image_b64:
-        # img2img через FLUX Kontext — сохраняет продукт, меняет фон/стиль
-        img_bytes = resize_image(image_b64)
+        img_bytes = resize_image(image_b64, 768)
         img_resized_b64 = base64.b64encode(img_bytes).decode('utf-8')
-        full_prompt = f"This exact product {base_concept}, keep the product identical, {prompt}"
-        api_url = "https://router.huggingface.co/fal-ai/flux-kontext/dev"
+        full_prompt = f"{prompt}, {base_concept}, high quality, photorealistic"
+        # img2img через HF inference — stable-diffusion-v1-5
+        api_url = "https://router.huggingface.co/hf-inference/models/stable-diffusion-v1-5/stable-diffusion-v1-5"
         payload = {
-            "prompt": full_prompt,
-            "image_url": f"data:image/jpeg;base64,{img_resized_b64}",
+            "inputs": full_prompt,
+            "image": img_resized_b64,
+            "parameters": {
+                "num_inference_steps": 20,
+                "guidance_scale": 7.5,
+                "strength": 0.65,
+            }
         }
     else:
-        # text2img fallback
-        full_prompt = f"{prompt}, {base_concept}, 4k, photorealistic, detailed"
+        full_prompt = f"{prompt}, {base_concept}, high quality, 4k, photorealistic"
         api_url = "https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell"
         payload = {
             "inputs": full_prompt,
@@ -77,7 +81,7 @@ def handler(event: dict, context) -> dict:
             "Content-Type": "application/json"
         },
         json=payload,
-        timeout=120
+        timeout=110
     )
 
     if response.status_code != 200:
@@ -87,23 +91,7 @@ def handler(event: dict, context) -> dict:
             'body': json.dumps({'error': f'HF API error: {response.status_code}', 'detail': response.text[:500]})
         }
 
-    # fal-ai возвращает JSON с URL, hf-inference возвращает байты
-    content_type = response.headers.get('Content-Type', '')
-    if 'application/json' in content_type:
-        data = response.json()
-        # fal-ai формат: {"images": [{"url": "..."}]}
-        img_url = data.get('images', [{}])[0].get('url', '')
-        if img_url:
-            img_response = requests.get(img_url, timeout=60)
-            image_b64_out = base64.b64encode(img_response.content).decode('utf-8')
-        else:
-            return {
-                'statusCode': 500,
-                'headers': {'Access-Control-Allow-Origin': '*'},
-                'body': json.dumps({'error': 'No image in response', 'detail': str(data)[:300]})
-            }
-    else:
-        image_b64_out = base64.b64encode(response.content).decode('utf-8')
+    image_b64_out = base64.b64encode(response.content).decode('utf-8')
 
     return {
         'statusCode': 200,
