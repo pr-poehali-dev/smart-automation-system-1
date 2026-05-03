@@ -81,11 +81,11 @@ export default function Dashboard() {
     { id: "gradient", label: t("concept_gradient"), desc: t("concept_gradient_desc"), icon: "Layers" },
   ]
 
-  const contentTypes: { id: ContentType; label: string; cost: number; icon: string; desc: string }[] = [
-    { id: "photo", label: t("content_photo"), cost: 1, icon: "Image", desc: t("content_photo_desc") },
-    { id: "infographic", label: t("content_infographic"), cost: 2, icon: "LayoutTemplate", desc: t("content_infographic_desc") },
-    { id: "tryon", label: t("content_tryon"), cost: 3, icon: "Shirt", desc: t("content_tryon_desc") },
-    { id: "video", label: t("content_video"), cost: 5, icon: "Video", desc: t("content_video_desc") },
+  const contentTypes: { id: ContentType; label: string; cost: number; icon: string; desc: string; preview: string }[] = [
+    { id: "photo", label: t("content_photo"), cost: 1, icon: "Image", desc: t("content_photo_desc"), preview: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/39f49594-8aa2-42d1-b59f-4a48158a46ca.jpg" },
+    { id: "infographic", label: t("content_infographic"), cost: 2, icon: "LayoutTemplate", desc: t("content_infographic_desc"), preview: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/20352bff-e47b-4a9b-b0bf-a8da2042a1f6.jpg" },
+    { id: "tryon", label: t("content_tryon"), cost: 3, icon: "Shirt", desc: t("content_tryon_desc"), preview: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/745072ef-179e-4c2c-b8af-97f75cb09203.jpg" },
+    { id: "video", label: t("content_video"), cost: 5, icon: "Video", desc: t("content_video_desc"), preview: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/45877cfd-35e8-4330-b838-fe8de412e59b.jpg" },
   ]
 
   const selectedTypeData = contentTypes.find((ct) => ct.id === selectedType)!
@@ -297,13 +297,20 @@ export default function Dashboard() {
                     <button
                       key={ct.id}
                       onClick={() => setSelectedType(ct.id)}
-                      className={`p-3 rounded-xl border-2 text-left transition-all ${
-                        selectedType === ct.id ? "border-[#7A7FEE] bg-[#7A7FEE]/5" : "border-gray-200 dark:border-gray-700 hover:border-gray-300"
+                      className={`rounded-xl border-2 text-left transition-all overflow-hidden ${
+                        selectedType === ct.id ? "border-[#7A7FEE] ring-2 ring-[#7A7FEE]/30" : "border-gray-200 dark:border-gray-700 hover:border-gray-300"
                       }`}
                     >
-                      <Icon name={ct.icon} size={18} className={selectedType === ct.id ? "text-[#7A7FEE]" : "text-gray-400"} />
-                      <div className="mt-1.5 font-medium text-black dark:text-white text-xs">{ct.label}</div>
-                      <div className="text-xs text-[#7A7FEE] font-semibold">{ct.cost} St</div>
+                      <div className="relative aspect-[4/3] overflow-hidden bg-gray-100 dark:bg-gray-800">
+                        <img src={ct.preview} alt={ct.label} className="w-full h-full object-cover" />
+                        <div className="absolute top-2 left-2 w-7 h-7 rounded-full bg-white/90 dark:bg-black/70 flex items-center justify-center backdrop-blur-sm">
+                          <Icon name={ct.icon} size={14} className={selectedType === ct.id ? "text-[#7A7FEE]" : "text-gray-600 dark:text-gray-300"} />
+                        </div>
+                      </div>
+                      <div className="p-2.5">
+                        <div className="font-medium text-black dark:text-white text-xs leading-tight">{ct.label}</div>
+                        <div className="text-xs text-[#7A7FEE] font-semibold mt-0.5">{ct.cost} St</div>
+                      </div>
                     </button>
                   ))}
                 </div>

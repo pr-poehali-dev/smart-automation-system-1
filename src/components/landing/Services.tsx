@@ -5,10 +5,30 @@ export default function Services() {
   const { t } = useLang()
 
   const services = [
-    { icon: "Image", title: t("service1_title"), desc: t("service1_desc") },
-    { icon: "LayoutTemplate", title: t("service2_title"), desc: t("service2_desc") },
-    { icon: "Shirt", title: t("service3_title"), desc: t("service3_desc") },
-    { icon: "Video", title: t("service4_title"), desc: t("service4_desc") },
+    {
+      icon: "Image",
+      title: t("service1_title"),
+      desc: t("service1_desc"),
+      image: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/39f49594-8aa2-42d1-b59f-4a48158a46ca.jpg",
+    },
+    {
+      icon: "LayoutTemplate",
+      title: t("service2_title"),
+      desc: t("service2_desc"),
+      image: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/20352bff-e47b-4a9b-b0bf-a8da2042a1f6.jpg",
+    },
+    {
+      icon: "Shirt",
+      title: t("service3_title"),
+      desc: t("service3_desc"),
+      image: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/745072ef-179e-4c2c-b8af-97f75cb09203.jpg",
+    },
+    {
+      icon: "Video",
+      title: t("service4_title"),
+      desc: t("service4_desc"),
+      image: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/45877cfd-35e8-4330-b838-fe8de412e59b.jpg",
+    },
   ]
 
   const steps = [
@@ -28,12 +48,17 @@ export default function Services() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
         {services.map((s, i) => (
-          <div key={i} className="card p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
-            <div className="bg-[#7A7FEE] w-12 h-12 rounded-full flex items-center justify-center mb-4 shadow-sm">
-              <Icon name={s.icon} size={22} className="text-white" />
+          <div key={i} className="card overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+            <div className="relative aspect-[16/9] overflow-hidden bg-gray-100 dark:bg-gray-800">
+              <img src={s.image} alt={s.title} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+              <div className="absolute top-4 left-4 bg-[#7A7FEE] w-12 h-12 rounded-full flex items-center justify-center shadow-lg">
+                <Icon name={s.icon} size={22} className="text-white" />
+              </div>
             </div>
-            <h3 className="text-xl font-semibold mb-2 text-black dark:text-white">{s.title}</h3>
-            <p className="text-gray-700 dark:text-gray-300">{s.desc}</p>
+            <div className="p-6">
+              <h3 className="text-xl font-semibold mb-2 text-black dark:text-white">{s.title}</h3>
+              <p className="text-gray-700 dark:text-gray-300">{s.desc}</p>
+            </div>
           </div>
         ))}
       </div>
