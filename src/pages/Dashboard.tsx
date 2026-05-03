@@ -1,26 +1,13 @@
 import { useState, useRef } from "react"
-import { useTheme } from "next-themes"
 import ThemeToggle from "@/components/landing/ThemeToggle"
 import Icon from "@/components/ui/icon"
+import { useLang } from "@/lib/LangContext"
 
 type Step = "upload" | "concept" | "describe" | "generating" | "result"
 type ContentType = "photo" | "infographic" | "tryon" | "video"
 
-const concepts = [
-  { id: "white-bg", label: "Белый фон", desc: "Стандарт ML & Amazon", icon: "Square" },
-  { id: "lifestyle", label: "Лайфстайл", desc: "Живые сцены и интерьер", icon: "Home" },
-  { id: "studio", label: "Студийный", desc: "Профессиональная съёмка", icon: "Camera" },
-  { id: "gradient", label: "Градиент", desc: "Современный фон", icon: "Layers" },
-]
-
-const contentTypes: { id: ContentType; label: string; cost: number; icon: string; desc: string }[] = [
-  { id: "photo", label: "AI-фото", cost: 1, icon: "Image", desc: "Фото товара" },
-  { id: "infographic", label: "Инфографика", cost: 2, icon: "LayoutTemplate", desc: "С характеристиками" },
-  { id: "tryon", label: "AI Try-on", cost: 3, icon: "Shirt", desc: "Виртуальная примерка" },
-  { id: "video", label: "AI-видео", cost: 5, icon: "Video", desc: "30-сек ролик" },
-]
-
 export default function Dashboard() {
+  const { t } = useLang()
   const [step, setStep] = useState<Step>("upload")
   const [uploadedImage, setUploadedImage] = useState<string | null>(null)
   const [selectedConcept, setSelectedConcept] = useState<string>("white-bg")
@@ -34,13 +21,26 @@ export default function Dashboard() {
   ])
   const fileRef = useRef<HTMLInputElement>(null)
 
-  const selectedTypeData = contentTypes.find((t) => t.id === selectedType)!
+  const concepts = [
+    { id: "white-bg", label: t("concept_white"), desc: t("concept_white_desc"), icon: "Square" },
+    { id: "lifestyle", label: t("concept_lifestyle"), desc: t("concept_lifestyle_desc"), icon: "Home" },
+    { id: "studio", label: t("concept_studio"), desc: t("concept_studio_desc"), icon: "Camera" },
+    { id: "gradient", label: t("concept_gradient"), desc: t("concept_gradient_desc"), icon: "Layers" },
+  ]
+
+  const contentTypes: { id: ContentType; label: string; cost: number; icon: string; desc: string }[] = [
+    { id: "photo", label: t("content_photo"), cost: 1, icon: "Image", desc: t("content_photo_desc") },
+    { id: "infographic", label: t("content_infographic"), cost: 2, icon: "LayoutTemplate", desc: t("content_infographic_desc") },
+    { id: "tryon", label: t("content_tryon"), cost: 3, icon: "Shirt", desc: t("content_tryon_desc") },
+    { id: "video", label: t("content_video"), cost: 5, icon: "Video", desc: t("content_video_desc") },
+  ]
+
+  const selectedTypeData = contentTypes.find((ct) => ct.id === selectedType)!
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
-    const url = URL.createObjectURL(file)
-    setUploadedImage(url)
+    setUploadedImage(URL.createObjectURL(file))
     setStep("concept")
   }
 
@@ -48,8 +48,7 @@ export default function Dashboard() {
     e.preventDefault()
     const file = e.dataTransfer.files?.[0]
     if (!file) return
-    const url = URL.createObjectURL(file)
-    setUploadedImage(url)
+    setUploadedImage(URL.createObjectURL(file))
     setStep("concept")
   }
 
@@ -59,10 +58,10 @@ export default function Dashboard() {
   }
 
   const stepIndex = ["upload", "concept", "describe", "result"].indexOf(step === "generating" ? "result" : step)
+  const stepLabels = [t("dash_step1"), t("dash_step2"), t("dash_step3"), t("dash_step4")]
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#0d0d0d]">
-      {/* Header */}
       <header className="sticky top-0 z-40 bg-white/90 dark:bg-[#111111]/90 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <a href="/" className="text-xl font-bold text-black dark:text-white">
@@ -71,30 +70,24 @@ export default function Dashboard() {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 bg-[#7A7FEE]/10 text-[#7A7FEE] px-3 py-1.5 rounded-full text-sm font-semibold">
               <Icon name="Coins" size={15} />
-              {balance} Пиастр
+              {balance} {t("dash_balance")}
             </div>
             <button className="text-sm text-gray-600 dark:text-gray-400 hover:text-[#7A7FEE] transition-colors">
-              + Купить
+              {t("dash_buy")}
             </button>
             <ThemeToggle />
-            <div className="w-8 h-8 rounded-full bg-[#7A7FEE] flex items-center justify-center text-white text-sm font-semibold">
-              U
-            </div>
+            <div className="w-8 h-8 rounded-full bg-[#7A7FEE] flex items-center justify-center text-white text-sm font-semibold">U</div>
           </div>
         </div>
       </header>
 
       <div className="max-w-6xl mx-auto px-4 py-8">
-        {/* Steps indicator */}
+        {/* Steps */}
         <div className="flex items-center gap-2 mb-8">
-          {["Загрузка", "Концепция", "Описание", "Результат"].map((label, i) => (
+          {stepLabels.map((label, i) => (
             <div key={i} className="flex items-center gap-2">
               <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                i === stepIndex
-                  ? "bg-[#7A7FEE] text-white"
-                  : i < stepIndex
-                  ? "bg-[#7A7FEE]/20 text-[#7A7FEE]"
-                  : "bg-gray-100 dark:bg-gray-800 text-gray-400"
+                i === stepIndex ? "bg-[#7A7FEE] text-white" : i < stepIndex ? "bg-[#7A7FEE]/20 text-[#7A7FEE]" : "bg-gray-100 dark:bg-gray-800 text-gray-400"
               }`}>
                 <span>{i + 1}</span>
                 <span className="hidden sm:inline">{label}</span>
@@ -105,10 +98,9 @@ export default function Dashboard() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main area */}
           <div className="lg:col-span-2 space-y-4">
 
-            {/* Step: Upload */}
+            {/* Upload */}
             {step === "upload" && (
               <div
                 className="bg-white dark:bg-[#1a1a1a] rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700 p-12 flex flex-col items-center justify-center text-center cursor-pointer hover:border-[#7A7FEE] transition-colors"
@@ -119,30 +111,28 @@ export default function Dashboard() {
                 <div className="w-16 h-16 rounded-full bg-[#7A7FEE]/10 flex items-center justify-center mb-4">
                   <Icon name="Upload" size={28} className="text-[#7A7FEE]" />
                 </div>
-                <h3 className="text-lg font-semibold text-black dark:text-white mb-2">Загрузите фото товара</h3>
+                <h3 className="text-lg font-semibold text-black dark:text-white mb-2">{t("dash_upload_title")}</h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                  Перетащите файл или нажмите для выбора<br />JPG, PNG, WEBP до 20 MB
+                  {t("dash_upload_desc")}<br />{t("dash_upload_formats")}
                 </p>
                 <button className="px-5 py-2.5 bg-[#7A7FEE] text-white rounded-lg text-sm font-medium hover:bg-opacity-90 transition-colors">
-                  Выбрать файл
+                  {t("dash_upload_btn")}
                 </button>
                 <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={handleFileChange} />
               </div>
             )}
 
-            {/* Step: Concept */}
+            {/* Concept */}
             {step === "concept" && (
               <div className="bg-white dark:bg-[#1a1a1a] rounded-2xl p-6">
-                <h3 className="text-lg font-semibold text-black dark:text-white mb-4">Выберите концепцию</h3>
+                <h3 className="text-lg font-semibold text-black dark:text-white mb-4">{t("dash_concept_title")}</h3>
                 <div className="grid grid-cols-2 gap-3 mb-6">
                   {concepts.map((c) => (
                     <button
                       key={c.id}
                       onClick={() => setSelectedConcept(c.id)}
                       className={`p-4 rounded-xl border-2 text-left transition-all ${
-                        selectedConcept === c.id
-                          ? "border-[#7A7FEE] bg-[#7A7FEE]/5"
-                          : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
+                        selectedConcept === c.id ? "border-[#7A7FEE] bg-[#7A7FEE]/5" : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
                       }`}
                     >
                       <Icon name={c.icon} size={20} className={selectedConcept === c.id ? "text-[#7A7FEE]" : "text-gray-400"} />
@@ -151,21 +141,19 @@ export default function Dashboard() {
                     </button>
                   ))}
                 </div>
-                <h3 className="text-lg font-semibold text-black dark:text-white mb-3">Тип контента</h3>
+                <h3 className="text-lg font-semibold text-black dark:text-white mb-3">{t("dash_content_title")}</h3>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                  {contentTypes.map((t) => (
+                  {contentTypes.map((ct) => (
                     <button
-                      key={t.id}
-                      onClick={() => setSelectedType(t.id)}
+                      key={ct.id}
+                      onClick={() => setSelectedType(ct.id)}
                       className={`p-3 rounded-xl border-2 text-left transition-all ${
-                        selectedType === t.id
-                          ? "border-[#7A7FEE] bg-[#7A7FEE]/5"
-                          : "border-gray-200 dark:border-gray-700 hover:border-gray-300"
+                        selectedType === ct.id ? "border-[#7A7FEE] bg-[#7A7FEE]/5" : "border-gray-200 dark:border-gray-700 hover:border-gray-300"
                       }`}
                     >
-                      <Icon name={t.icon} size={18} className={selectedType === t.id ? "text-[#7A7FEE]" : "text-gray-400"} />
-                      <div className="mt-1.5 font-medium text-black dark:text-white text-xs">{t.label}</div>
-                      <div className="text-xs text-[#7A7FEE] font-semibold">{t.cost} Пиастр</div>
+                      <Icon name={ct.icon} size={18} className={selectedType === ct.id ? "text-[#7A7FEE]" : "text-gray-400"} />
+                      <div className="mt-1.5 font-medium text-black dark:text-white text-xs">{ct.label}</div>
+                      <div className="text-xs text-[#7A7FEE] font-semibold">{ct.cost} St</div>
                     </button>
                   ))}
                 </div>
@@ -173,34 +161,32 @@ export default function Dashboard() {
                   onClick={() => setStep("describe")}
                   className="mt-6 w-full py-3 bg-[#7A7FEE] text-white rounded-xl font-medium hover:bg-opacity-90 transition-colors"
                 >
-                  Далее →
+                  {t("dash_next")}
                 </button>
               </div>
             )}
 
-            {/* Step: Describe */}
+            {/* Describe */}
             {step === "describe" && (
               <div className="bg-white dark:bg-[#1a1a1a] rounded-2xl p-6">
-                <h3 className="text-lg font-semibold text-black dark:text-white mb-2">Опишите товар</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
-                  AI усилит описание и добавит ключевые слова для {selectedTypeData.label === "AI-фото" ? "Mercado Libre" : "Amazon"}
-                </p>
+                <h3 className="text-lg font-semibold text-black dark:text-white mb-2">{t("dash_describe_title")}</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">{t("dash_describe_hint")}</p>
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Например: Беспроводные наушники TWS, 40 часов работы, активное шумоподавление, IPX5..."
+                  placeholder={t("dash_describe_placeholder")}
                   className="w-full h-36 px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-[#111] text-black dark:text-white text-sm resize-none focus:outline-none focus:border-[#7A7FEE] transition-colors"
                 />
                 <div className="flex items-center justify-between mt-2 mb-4">
-                  <span className="text-xs text-gray-400">{description.length} символов</span>
-                  <span className="text-xs text-gray-400">Чем подробнее — тем лучше результат</span>
+                  <span className="text-xs text-gray-400">{description.length}</span>
+                  <span className="text-xs text-gray-400">{t("dash_describe_hint")}</span>
                 </div>
                 <div className="flex gap-3">
                   <button
                     onClick={() => setStep("concept")}
                     className="px-5 py-3 rounded-xl border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-600 dark:text-gray-400 hover:border-[#7A7FEE] transition-colors"
                   >
-                    ← Назад
+                    {t("dash_back")}
                   </button>
                   <button
                     onClick={handleGenerate}
@@ -208,33 +194,33 @@ export default function Dashboard() {
                     className="flex-1 py-3 bg-[#7A7FEE] text-white rounded-xl font-medium hover:bg-opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
                     <Icon name="Sparkles" size={16} />
-                    Сгенерировать · {selectedTypeData.cost} Пиастр
+                    {t("dash_generate")} · {selectedTypeData.cost} St
                   </button>
                 </div>
               </div>
             )}
 
-            {/* Step: Generating */}
+            {/* Generating */}
             {step === "generating" && (
               <div className="bg-white dark:bg-[#1a1a1a] rounded-2xl p-12 flex flex-col items-center justify-center text-center">
                 <div className="w-16 h-16 rounded-full bg-[#7A7FEE]/10 flex items-center justify-center mb-4 animate-pulse">
                   <Icon name="Sparkles" size={28} className="text-[#7A7FEE]" />
                 </div>
-                <h3 className="text-lg font-semibold text-black dark:text-white mb-2">Генерирую контент...</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">AI обрабатывает ваш товар — займёт до 30 секунд</p>
+                <h3 className="text-lg font-semibold text-black dark:text-white mb-2">{t("dash_generating_title")}</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">{t("dash_generating_desc")}</p>
                 <div className="w-full max-w-xs bg-gray-100 dark:bg-gray-800 rounded-full h-2">
                   <div className="bg-[#7A7FEE] h-2 rounded-full animate-pulse" style={{ width: "60%" }} />
                 </div>
               </div>
             )}
 
-            {/* Step: Result */}
+            {/* Result */}
             {step === "result" && (
               <div className="bg-white dark:bg-[#1a1a1a] rounded-2xl p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-black dark:text-white">Готово!</h3>
+                  <h3 className="text-lg font-semibold text-black dark:text-white">{t("dash_result_title")}</h3>
                   <span className="text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-2 py-1 rounded-full font-medium">
-                    Списано {selectedTypeData.cost} Пиастр
+                    -{selectedTypeData.cost} St
                   </span>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
@@ -252,13 +238,13 @@ export default function Dashboard() {
                 <div className="flex gap-3">
                   <button className="flex-1 py-2.5 bg-[#7A7FEE] text-white rounded-xl font-medium text-sm hover:bg-opacity-90 transition-colors flex items-center justify-center gap-2">
                     <Icon name="Download" size={16} />
-                    Скачать все
+                    {t("dash_download_all")}
                   </button>
                   <button
                     onClick={() => { setStep("upload"); setUploadedImage(null); setDescription("") }}
                     className="px-5 py-2.5 border border-gray-200 dark:border-gray-700 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-400 hover:border-[#7A7FEE] transition-colors"
                   >
-                    Новая генерация
+                    {t("dash_new")}
                   </button>
                 </div>
               </div>
@@ -267,9 +253,8 @@ export default function Dashboard() {
 
           {/* Sidebar */}
           <div className="space-y-4">
-            {/* Preview */}
             <div className="bg-white dark:bg-[#1a1a1a] rounded-2xl p-4">
-              <h4 className="text-sm font-semibold text-black dark:text-white mb-3">Ваш товар</h4>
+              <h4 className="text-sm font-semibold text-black dark:text-white mb-3">{t("dash_your_product")}</h4>
               {uploadedImage ? (
                 <div className="relative">
                   <img src={uploadedImage} alt="Uploaded" className="w-full h-48 object-cover rounded-xl" />
@@ -283,47 +268,43 @@ export default function Dashboard() {
               ) : (
                 <div
                   className="w-full h-48 bg-gray-100 dark:bg-gray-800 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-                  onClick={() => { setStep("upload") }}
+                  onClick={() => setStep("upload")}
                 >
                   <Icon name="ImagePlus" size={24} className="text-gray-400 mb-2" />
-                  <span className="text-xs text-gray-400">Нет фото</span>
+                  <span className="text-xs text-gray-400">{t("dash_no_photo")}</span>
                 </div>
               )}
             </div>
 
-            {/* Balance */}
             <div className="bg-white dark:bg-[#1a1a1a] rounded-2xl p-4">
-              <h4 className="text-sm font-semibold text-black dark:text-white mb-3">Баланс</h4>
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <Icon name="Coins" size={18} className="text-[#7A7FEE]" />
-                  <span className="text-2xl font-bold text-black dark:text-white">{balance}</span>
-                  <span className="text-sm text-gray-500">Пиастр</span>
-                </div>
+              <h4 className="text-sm font-semibold text-black dark:text-white mb-3">{t("dash_balance")}</h4>
+              <div className="flex items-center gap-2 mb-2">
+                <Icon name="Coins" size={18} className="text-[#7A7FEE]" />
+                <span className="text-2xl font-bold text-black dark:text-white">{balance}</span>
+                <span className="text-sm text-gray-500">St</span>
               </div>
               <div className="w-full bg-gray-100 dark:bg-gray-800 rounded-full h-1.5 mb-3">
                 <div className="bg-[#7A7FEE] h-1.5 rounded-full" style={{ width: `${(balance / 500) * 100}%` }} />
               </div>
               <button className="w-full py-2 border border-[#7A7FEE] text-[#7A7FEE] rounded-lg text-sm font-medium hover:bg-[#7A7FEE]/10 transition-colors">
-                + Пополнить
+                {t("dash_recharge")}
               </button>
             </div>
 
-            {/* Quick stats */}
             <div className="bg-white dark:bg-[#1a1a1a] rounded-2xl p-4">
-              <h4 className="text-sm font-semibold text-black dark:text-white mb-3">Статистика</h4>
+              <h4 className="text-sm font-semibold text-black dark:text-white mb-3">{t("dash_stats")}</h4>
               <div className="space-y-3">
-                {[
-                  { label: "Сгенерировано", value: "0", icon: "Sparkles" },
-                  { label: "Скачано файлов", value: "0", icon: "Download" },
-                  { label: "Потрачено Пиастр", value: "0", icon: "Coins" },
-                ].map((s) => (
+                {([
+                  { label: t("dash_generated"), icon: "Sparkles" },
+                  { label: t("dash_downloaded"), icon: "Download" },
+                  { label: t("dash_spent"), icon: "Coins" },
+                ] as { label: string; icon: string }[]).map((s) => (
                   <div key={s.label} className="flex items-center justify-between">
                     <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
                       <Icon name={s.icon} size={14} />
                       {s.label}
                     </div>
-                    <span className="text-sm font-semibold text-black dark:text-white">{s.value}</span>
+                    <span className="text-sm font-semibold text-black dark:text-white">0</span>
                   </div>
                 ))}
               </div>
