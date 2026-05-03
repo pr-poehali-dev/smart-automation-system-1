@@ -39,7 +39,7 @@ export default function Header() {
           <div className="flex items-center justify-between">
             <a href="#" className="flex items-center">
               <span className="text-2xl font-bold text-black dark:text-white">
-                Neural<span className="text-[#7A7FEE]">Works</span>
+                Piast<span className="text-[#7A7FEE]">ra</span>
               </span>
             </a>
 
@@ -48,18 +48,26 @@ export default function Header() {
                 <ul className="flex space-x-6">
                   <li>
                     <a
-                      href="#projects"
+                      href="#services"
                       className="text-black dark:text-white hover:text-[#7A7FEE] dark:hover:text-[#7A7FEE] transition-colors"
                     >
-                      Проекты
+                      Возможности
                     </a>
                   </li>
                   <li>
                     <a
-                      href="#services"
+                      href="#projects"
                       className="text-black dark:text-white hover:text-[#7A7FEE] dark:hover:text-[#7A7FEE] transition-colors"
                     >
-                      Услуги
+                      Примеры
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#pricing"
+                      className="text-black dark:text-white hover:text-[#7A7FEE] dark:hover:text-[#7A7FEE] transition-colors"
+                    >
+                      Тарифы
                     </a>
                   </li>
                   <li>
@@ -67,21 +75,20 @@ export default function Header() {
                       href="#faq"
                       className="text-black dark:text-white hover:text-[#7A7FEE] dark:hover:text-[#7A7FEE] transition-colors"
                     >
-                      Вопросы
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#contact"
-                      className="text-black dark:text-white hover:text-[#7A7FEE] dark:hover:text-[#7A7FEE] transition-colors"
-                    >
-                      Контакты
+                      FAQ
                     </a>
                   </li>
                 </ul>
               </nav>
 
               <ThemeToggle />
+
+              <a
+                href="#contact"
+                className="hidden md:inline-flex items-center px-4 py-2 bg-[#7A7FEE] text-white rounded-lg text-sm font-medium hover:bg-opacity-90 transition-colors"
+              >
+                Начать бесплатно
+              </a>
 
               <button
                 onClick={() => setMobileMenuOpen(true)}
@@ -100,7 +107,7 @@ export default function Header() {
           <div className="fixed top-0 right-0 h-full w-[85%] max-w-sm bg-white dark:bg-[#111111] shadow-xl overflow-y-auto">
             <div className="sticky top-0 z-10 flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-[#111111]">
               <span className="text-xl font-bold text-black dark:text-white">
-                Neural<span className="text-[#7A7FEE]">Works</span>
+                Piast<span className="text-[#7A7FEE]">ra</span>
               </span>
               <button
                 onClick={() => setMobileMenuOpen(false)}
@@ -124,20 +131,29 @@ export default function Header() {
                 </li>
                 <li>
                   <a
-                    href="#projects"
-                    className="flex items-center py-3 px-4 rounded-lg text-base text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Проекты
-                  </a>
-                </li>
-                <li>
-                  <a
                     href="#services"
                     className="flex items-center py-3 px-4 rounded-lg text-base text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Услуги
+                    Возможности
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#projects"
+                    className="flex items-center py-3 px-4 rounded-lg text-base text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Примеры
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="#pricing"
+                    className="flex items-center py-3 px-4 rounded-lg text-base text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Тарифы
                   </a>
                 </li>
                 <li>
@@ -146,7 +162,7 @@ export default function Header() {
                     className="flex items-center py-3 px-4 rounded-lg text-base text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Вопросы
+                    FAQ
                   </a>
                 </li>
               </ul>
@@ -158,7 +174,7 @@ export default function Header() {
                 className="flex items-center justify-center w-full py-3 px-4 bg-[#7A7FEE] text-white rounded-lg text-base font-medium hover:bg-opacity-90 transition-colors"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Связаться с нами
+                Начать бесплатно
               </a>
             </div>
           </div>

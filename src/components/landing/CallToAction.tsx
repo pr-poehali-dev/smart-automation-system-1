@@ -6,15 +6,19 @@ export default function CallToAction() {
       <div className="p-8 md:p-10 lg:p-12 flex flex-col md:flex-row items-start">
         <div className="w-full md:w-3/5 z-10">
           <h2 className="text-black dark:text-white mb-6 text-3xl md:text-4xl lg:text-5xl font-medium leading-tight">
-            Ваша следующая идея <span className="text-[#7A7FEE] dark:text-[#7A7FEE]">начинается</span> здесь
+            Начните продавать больше{" "}
+            <span className="text-[#7A7FEE] dark:text-[#7A7FEE]">уже сегодня</span>
           </h2>
           <p className="my-6 text-sm md:text-base max-w-md text-gray-700 dark:text-gray-300">
-            Есть идея или проблема, которую нужно решить?
+            Зарегистрируйтесь и получите <strong>50 Пиастр бесплатно</strong> — этого хватит на первые 50 генераций. Кредитная карта не нужна.
           </p>
           <p className="mb-6 text-sm md:text-base max-w-md text-gray-700 dark:text-gray-300">
-            Давайте обсудим. Мы поможем найти лучший подход, составить план и понять, подходим ли мы друг другу.
+            Загрузите первое фото и убедитесь в качестве сами — без рисков и обязательств.
           </p>
-          <div>
+          <div className="flex flex-wrap gap-3">
+            <a href="#" className="btn-primary">
+              Создать аккаунт бесплатно
+            </a>
             <ContactFormButton />
           </div>
         </div>
