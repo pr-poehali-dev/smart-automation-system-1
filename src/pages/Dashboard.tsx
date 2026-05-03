@@ -58,6 +58,27 @@ const PRODUCT_CATEGORIES: ProductCategory[] = [
     preview: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/5f2d7fbf-28b2-41c7-a5d8-f5d77ab170ad.jpg",
     prompt: "Keep EXACT product: same model, brand color and logo, all wear marks, scratches, cable condition, grip texture. Same angle — do not rotate or reposition by even 1°. Preserve all signs of use — they demonstrate reliability. Do NOT clean, polish, or alter the product in ANY way.",
   },
+  {
+    id: "clothing",
+    label: "Одежда / Нижнее бельё",
+    icon: "Shirt",
+    preview: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/14cae0d7-5c3f-4dd6-bda5-112296ee7626.jpg",
+    prompt: "Keep EXACT garment: same fabric texture, color, pattern, stitching, lace, buttons, zippers, brand labels, fit and silhouette. Preserve fabric folds and drape exactly as in original. Same angle — do not rotate or reposition by even 1°. Do NOT change cut, color, fabric, or alter the garment in ANY way.",
+  },
+  {
+    id: "furniture",
+    label: "Мебель / Декор",
+    icon: "Armchair",
+    preview: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/b9caa117-30ae-4966-b40e-60d99cc67ef2.jpg",
+    prompt: "Keep EXACT furniture item: same shape, dimensions, material (wood grain, fabric texture, metal finish), color, upholstery pattern, legs, handles, hardware. Preserve all details and proportions. Same angle and perspective — do not rotate or reposition by even 1°. Do NOT redesign, restyle, or alter the item in ANY way.",
+  },
+  {
+    id: "lighting",
+    label: "Люстры / Светильники",
+    icon: "Lamp",
+    preview: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/8fc58b04-1bc0-4972-a7a4-fc2911a6bf38.jpg",
+    prompt: "Keep EXACT lighting fixture: same shape, material (glass, metal, crystal), color, finish, bulb type and arrangement, chain or cord. Preserve light glow and reflections exactly. Same angle — do not rotate or reposition by even 1°. Do NOT change design, shape, or alter the fixture in ANY way.",
+  },
 ]
 
 export default function Dashboard() {
