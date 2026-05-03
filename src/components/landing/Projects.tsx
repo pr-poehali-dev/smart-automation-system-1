@@ -10,21 +10,21 @@ export default function Projects() {
       badge: t("service1_title"),
       title: t("project1_title"),
       description: t("project1_desc"),
-      mainImage: "/portfolio-images/ecommerce-interface-1.jpg",
+      mainImage: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/f68bd52a-55ab-4db9-afeb-4b0e1864a83a.jpg",
     },
     {
       platform: "Amazon",
       badge: t("service3_title"),
       title: t("project2_title"),
       description: t("project2_desc"),
-      mainImage: "/portfolio-images/ai-platform-1.jpg",
+      mainImage: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/b4d74193-6886-4ddc-890d-a2fe18f9f302.jpg",
     },
     {
       platform: "Mercado Libre",
       badge: t("service2_title"),
       title: t("project3_title"),
       description: t("project3_desc"),
-      mainImage: "/portfolio-images/saas-dashboard-1.jpg",
+      mainImage: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/669a0a77-2146-4232-8fcf-a2c4b71acaf7.jpg",
     },
   ]
 
