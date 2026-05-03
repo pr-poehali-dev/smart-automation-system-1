@@ -83,9 +83,9 @@ export default function Dashboard() {
 
   const contentTypes: { id: ContentType; label: string; cost: number; icon: string; desc: string; preview: string }[] = [
     { id: "photo", label: t("content_photo"), cost: 1, icon: "Image", desc: t("content_photo_desc"), preview: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/39f49594-8aa2-42d1-b59f-4a48158a46ca.jpg" },
-    { id: "infographic", label: t("content_infographic"), cost: 2, icon: "LayoutTemplate", desc: t("content_infographic_desc"), preview: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/20352bff-e47b-4a9b-b0bf-a8da2042a1f6.jpg" },
-    { id: "tryon", label: t("content_tryon"), cost: 3, icon: "Shirt", desc: t("content_tryon_desc"), preview: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/745072ef-179e-4c2c-b8af-97f75cb09203.jpg" },
-    { id: "video", label: t("content_video"), cost: 5, icon: "Video", desc: t("content_video_desc"), preview: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/45877cfd-35e8-4330-b838-fe8de412e59b.jpg" },
+    { id: "infographic", label: t("content_infographic"), cost: 1, icon: "LayoutTemplate", desc: t("content_infographic_desc"), preview: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/20352bff-e47b-4a9b-b0bf-a8da2042a1f6.jpg" },
+    { id: "tryon", label: t("content_tryon"), cost: 4, icon: "Shirt", desc: t("content_tryon_desc"), preview: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/745072ef-179e-4c2c-b8af-97f75cb09203.jpg" },
+    { id: "video", label: t("content_video"), cost: 8, icon: "Video", desc: t("content_video_desc"), preview: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/45877cfd-35e8-4330-b838-fe8de412e59b.jpg" },
   ]
 
   const selectedTypeData = contentTypes.find((ct) => ct.id === selectedType)!

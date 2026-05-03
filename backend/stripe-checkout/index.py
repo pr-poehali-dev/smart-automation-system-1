@@ -6,9 +6,9 @@ import urllib.error
 import psycopg2
 
 PLANS = {
-    'start': {'price': 9, 'sestertius': 100, 'name': 'Старт'},
-    'business': {'price': 35, 'sestertius': 500, 'name': 'Бизнес'},
-    'pro': {'price': 99, 'sestertius': 1600, 'name': 'Pro'},
+    'start': {'price': 12, 'sestertius': 100, 'name': 'Старт'},
+    'business': {'price': 59, 'sestertius': 500, 'name': 'Бизнес'},
+    'pro': {'price': 189, 'sestertius': 1600, 'name': 'Pro'},
 }
 
 
