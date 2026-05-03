@@ -1,0 +1,23 @@
+{
+  "tests": [
+    {
+      "name": "OPTIONS preflight",
+      "method": "OPTIONS",
+      "path": "/",
+      "expectedStatus": 200
+    },
+    {
+      "name": "Generate photo - white background",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "prompt": "sneakers",
+        "concept": "white-bg",
+        "content_type": "photo"
+      },
+      "expectedStatus": 200,
+      "expectedBody": { "image": "string" },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
