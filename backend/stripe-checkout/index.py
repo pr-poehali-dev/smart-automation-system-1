@@ -87,10 +87,23 @@ def handler(event: dict, context) -> dict:
             session = json.loads(response.read().decode('utf-8'))
     except urllib.error.HTTPError as e:
         err_body = e.read().decode('utf-8')
+        print(f'STRIPE_ERROR status={e.code} body={err_body}')
+        try:
+            err_json = json.loads(err_body)
+            stripe_msg = err_json.get('error', {}).get('message', err_body)
+        except Exception:
+            stripe_msg = err_body
         return {
             'statusCode': 500,
-            'headers': {'Access-Control-Allow-Origin': '*'},
-            'body': json.dumps({'error': 'Stripe API error', 'details': err_body}),
+            'headers': {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
+            'body': json.dumps({'error': f'Stripe: {stripe_msg}'}),
+        }
+    except Exception as e:
+        print(f'GENERAL_ERROR {type(e).__name__}: {str(e)}')
+        return {
+            'statusCode': 500,
+            'headers': {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
+            'body': json.dumps({'error': f'Server error: {str(e)}'}),
         }
 
     dsn = os.environ.get('DATABASE_URL', '')
