@@ -51,28 +51,30 @@ def handler(event: dict, context) -> dict:
             'body': json.dumps({'error': 'HUGGINGFACE_API_TOKEN not set'})
         }
 
+    # Анализируем загруженное изображение для создания точного промпта
     if image_b64:
-        img_bytes = resize_image(image_b64, 768)
-        img_resized_b64 = base64.b64encode(img_bytes).decode('utf-8')
-        full_prompt = f"{prompt}, {base_concept}, high quality, photorealistic"
-        # img2img через HF inference — stable-diffusion-v1-5
-        api_url = "https://router.huggingface.co/hf-inference/models/stable-diffusion-v1-5/stable-diffusion-v1-5"
-        payload = {
-            "inputs": full_prompt,
-            "image": img_resized_b64,
-            "parameters": {
-                "num_inference_steps": 20,
-                "guidance_scale": 7.5,
-                "strength": 0.65,
-            }
-        }
+        img_bytes = resize_image(image_b64, 512)
+        # Используем HF image-to-text чтобы описать товар
+        caption_response = requests.post(
+            "https://router.huggingface.co/hf-inference/models/Salesforce/blip-image-captioning-base",
+            headers={"Authorization": f"Bearer {hf_token}"},
+            json={"inputs": base64.b64encode(img_bytes).decode('utf-8')},
+            timeout=30
+        )
+        product_desc = ""
+        if caption_response.status_code == 200:
+            caption_data = caption_response.json()
+            if isinstance(caption_data, list) and caption_data:
+                product_desc = caption_data[0].get('generated_text', '')
+        full_prompt = f"{product_desc}, {prompt}, {base_concept}, high quality, 4k, photorealistic, product photography"
     else:
-        full_prompt = f"{prompt}, {base_concept}, high quality, 4k, photorealistic"
-        api_url = "https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell"
-        payload = {
-            "inputs": full_prompt,
-            "parameters": {"num_inference_steps": 4, "width": 1024, "height": 1024}
-        }
+        full_prompt = f"{prompt}, {base_concept}, high quality, 4k, photorealistic, product photography"
+
+    api_url = "https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell"
+    payload = {
+        "inputs": full_prompt,
+        "parameters": {"num_inference_steps": 4, "width": 1024, "height": 1024}
+    }
 
     response = requests.post(
         api_url,
