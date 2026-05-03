@@ -84,7 +84,7 @@ export default function Header() {
               <ThemeToggle />
 
               <a
-                href="#contact"
+                href="/dashboard"
                 className="hidden md:inline-flex items-center px-4 py-2 bg-[#7A7FEE] text-white rounded-lg text-sm font-medium hover:bg-opacity-90 transition-colors"
               >
                 Начать бесплатно
