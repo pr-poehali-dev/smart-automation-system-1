@@ -12,8 +12,13 @@ export default function DashboardHeader({ balance }: Props) {
   return (
     <header className="sticky top-0 z-40 bg-white/90 dark:bg-[#111111]/90 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800">
       <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-        <a href="/" className="text-xl font-bold text-black dark:text-white">
-          Piast<span className="text-[#7A7FEE]">ra</span>
+        <a href="/" className="flex items-center gap-1.5">
+          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[#7A7FEE] to-[#9B8FFF] flex items-center justify-center shadow-sm">
+            <Icon name="Sparkles" size={15} className="text-white" />
+          </div>
+          <span className="text-base font-bold text-black dark:text-white">
+            Piast<span className="text-[#7A7FEE]">ra</span>
+          </span>
         </a>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 bg-[#7A7FEE]/10 text-[#7A7FEE] px-3 py-1.5 rounded-full text-sm font-semibold">

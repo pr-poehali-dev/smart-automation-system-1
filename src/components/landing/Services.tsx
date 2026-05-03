@@ -63,21 +63,20 @@ export default function Services() {
         ))}
       </div>
 
-      <div className="card p-4 shadow-sm">
-        <h3 className="text-base font-semibold text-black dark:text-white mb-4 text-center">{t("how_title")}</h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {steps.map((s, i) => (
-            <div key={i} className="flex flex-col items-center text-center relative">
-              <div className="w-7 h-7 rounded-full bg-[#7A7FEE]/10 flex items-center justify-center mb-1.5">
-                <span className="text-[#7A7FEE] font-bold text-[10px]">{s.step}</span>
+      <div className="card p-2 shadow-sm">
+        <div className="flex items-center justify-between gap-2 flex-wrap">
+          <h3 className="text-[11px] font-semibold text-black dark:text-white shrink-0">{t("how_title")}:</h3>
+          <div className="flex items-center gap-1.5 flex-1 justify-end flex-wrap">
+            {steps.map((s, i) => (
+              <div key={i} className="flex items-center gap-1">
+                <div className="w-4 h-4 rounded-full bg-[#7A7FEE]/10 flex items-center justify-center shrink-0">
+                  <span className="text-[#7A7FEE] font-bold text-[8px]">{s.step}</span>
+                </div>
+                <span className="text-[10px] font-medium text-black dark:text-white">{s.title}</span>
+                {i < steps.length - 1 && <span className="text-[#7A7FEE]/40 mx-0.5">→</span>}
               </div>
-              <h4 className="font-semibold text-black dark:text-white text-xs mb-0.5">{s.title}</h4>
-              <p className="text-[10px] text-gray-600 dark:text-gray-400 line-clamp-2">{s.desc}</p>
-              {i < steps.length - 1 && (
-                <div className="hidden md:block absolute top-3.5 left-[calc(50%+14px)] w-[calc(100%-28px)] h-px bg-[#7A7FEE]/30" />
-              )}
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
     </section>
