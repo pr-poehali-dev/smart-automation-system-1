@@ -2,6 +2,7 @@ import { useState, useRef } from "react"
 import ThemeToggle from "@/components/landing/ThemeToggle"
 import Icon from "@/components/ui/icon"
 import { useLang } from "@/lib/LangContext"
+import func2url from "../../backend/func2url.json"
 
 type Step = "upload" | "concept" | "describe" | "generating" | "result"
 type ContentType = "photo" | "infographic" | "tryon" | "video"
@@ -14,12 +15,10 @@ export default function Dashboard() {
   const [selectedType, setSelectedType] = useState<ContentType>("photo")
   const [description, setDescription] = useState("")
   const [balance] = useState(10)
-  const [generatedImages] = useState([
-    "/portfolio-images/ecommerce-interface-1.jpg",
-    "/portfolio-images/ai-platform-1.jpg",
-    "/portfolio-images/saas-dashboard-1.jpg",
-  ])
+  const [generatedImages, setGeneratedImages] = useState<string[]>([])
+  const [generateError, setGenerateError] = useState<string | null>(null)
   const fileRef = useRef<HTMLInputElement>(null)
+  const uploadedImageFile = useRef<File | null>(null)
 
   const concepts = [
     { id: "white-bg", label: t("concept_white"), desc: t("concept_white_desc"), icon: "Square" },
@@ -40,6 +39,7 @@ export default function Dashboard() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
+    uploadedImageFile.current = file
     setUploadedImage(URL.createObjectURL(file))
     setStep("concept")
   }
@@ -48,13 +48,38 @@ export default function Dashboard() {
     e.preventDefault()
     const file = e.dataTransfer.files?.[0]
     if (!file) return
+    uploadedImageFile.current = file
     setUploadedImage(URL.createObjectURL(file))
     setStep("concept")
   }
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     setStep("generating")
-    setTimeout(() => setStep("result"), 3000)
+    setGenerateError(null)
+    setGeneratedImages([])
+    try {
+      const results: string[] = []
+      for (let i = 0; i < 3; i++) {
+        const res = await fetch(func2url["generate-image"], {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            prompt: description || "product photo",
+            concept: selectedConcept,
+            content_type: selectedType,
+          }),
+        })
+        const data = await res.json()
+        if (data.image) {
+          results.push(`data:image/jpeg;base64,${data.image}`)
+        }
+      }
+      setGeneratedImages(results)
+      setStep("result")
+    } catch (e) {
+      setGenerateError("Ошибка генерации. Попробуй ещё раз.")
+      setStep("describe")
+    }
   }
 
   const stepIndex = ["upload", "concept", "describe", "result"].indexOf(step === "generating" ? "result" : step)
@@ -181,6 +206,9 @@ export default function Dashboard() {
                   <span className="text-xs text-gray-400">{description.length}</span>
                   <span className="text-xs text-gray-400">{t("dash_describe_hint")}</span>
                 </div>
+                {generateError && (
+                  <div className="mb-3 px-4 py-2 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm rounded-xl">{generateError}</div>
+                )}
                 <div className="flex gap-3">
                   <button
                     onClick={() => setStep("concept")}

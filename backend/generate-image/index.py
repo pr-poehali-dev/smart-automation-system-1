@@ -5,7 +5,7 @@ import requests
 
 
 def handler(event: dict, context) -> dict:
-    """Генерация изображения через Hugging Face Stable Diffusion XL. v6"""
+    """Генерация изображения через Hugging Face Stable Diffusion XL. v7"""
     if event.get('httpMethod') == 'OPTIONS':
         return {
             'statusCode': 200,
@@ -40,7 +40,7 @@ def handler(event: dict, context) -> dict:
             'headers': {'Access-Control-Allow-Origin': '*'},
             'body': json.dumps({'error': 'HUGGINGFACE_API_TOKEN not set'})
         }
-    api_url = "https://router.huggingface.co/hf-inference/models/stabilityai/stable-diffusion-xl-base-1.0"
+    api_url = "https://router.huggingface.co/hf-inference/models/black-forest-labs/FLUX.1-schnell"
 
     response = requests.post(
         api_url,
