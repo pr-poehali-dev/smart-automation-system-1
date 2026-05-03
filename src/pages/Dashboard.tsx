@@ -12,6 +12,7 @@ type ProductCategory = {
   label: string
   icon: string
   prompt: string
+  preview: string
 }
 
 const PRODUCT_CATEGORIES: ProductCategory[] = [
@@ -19,36 +20,42 @@ const PRODUCT_CATEGORIES: ProductCategory[] = [
     id: "sneakers",
     label: "Кроссовки / Обувь",
     icon: "Footprints",
+    preview: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/1d7871f9-fe38-45e1-a3b8-db854982ebcf.jpg",
     prompt: "Keep EXACT product: same shape, color, material, brand logo, stitching, sole wear, lace condition, same angle and perspective — do not rotate or reposition by even 1°. Preserve original lighting on the product. Do NOT modify, redesign, clean, or alter the product in ANY way.",
   },
   {
     id: "watches",
     label: "Часы / Ювелирка",
     icon: "Watch",
+    preview: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/3db0e154-7b27-4852-9a27-fb69a973345a.jpg",
     prompt: "Keep EXACT product: same case shape, dial color, strap material and color with stitching, date window position, crown details. Preserve exact light reflection pattern on glass — same glare position, do not add new reflections. Do NOT polish, remove scratches, or alter the product in ANY way.",
   },
   {
     id: "cosmetics",
     label: "Косметика / Бутылка",
     icon: "Droplets",
+    preview: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/0279f324-f634-451e-aefb-e3af3ca4efdb.jpg",
     prompt: "Keep EXACT product: same bottle/container shape, cap color and material, liquid fill level, label with all text and graphics, transparency of glass. Same angle — do not rotate or reposition by even 1°. Do NOT change shape, color, label, or fill level in ANY way.",
   },
   {
     id: "gadgets",
     label: "Гаджет / Телефон / Ноутбук",
     icon: "Laptop",
+    preview: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/eb1adbb9-23d4-4520-ad42-18822907a7bc.jpg",
     prompt: "Keep EXACT product: same model, color, all stickers, decals, ports, wear marks, rubber edge condition. Preserve screen content exactly — do not change what is displayed on screen. Same angle — do not rotate or reposition by even 1°. Do NOT clean, polish, or alter the product in ANY way.",
   },
   {
     id: "packaging",
     label: "Упаковка / Коробка / Еда",
     icon: "Package",
+    preview: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/6eb12e93-af3d-46e7-99b1-900936360781.jpg",
     prompt: "Keep EXACT product: same packaging shape, brand logo and colors, all text on packaging, grease spots, dents, creases — these are intentional and must be preserved. Same angle — do not rotate or reposition by even 1°. Do NOT clean, fix, or alter the product in ANY way.",
   },
   {
     id: "tools",
     label: "Инструменты / Станки",
     icon: "Wrench",
+    preview: "https://cdn.poehali.dev/projects/f1f6ce41-04c8-4892-abd6-bd5cce7672a0/files/5f2d7fbf-28b2-41c7-a5d8-f5d77ab170ad.jpg",
     prompt: "Keep EXACT product: same model, brand color and logo, all wear marks, scratches, cable condition, grip texture. Same angle — do not rotate or reposition by even 1°. Preserve all signs of use — they demonstrate reliability. Do NOT clean, polish, or alter the product in ANY way.",
   },
 ]
@@ -222,18 +229,28 @@ export default function Dashboard() {
                     <button
                       key={cat.id}
                       onClick={() => setSelectedCategory(cat)}
-                      className={`p-4 rounded-xl border-2 text-left transition-all ${
+                      className={`rounded-xl border-2 text-left transition-all overflow-hidden ${
                         selectedCategory?.id === cat.id
-                          ? "border-[#7A7FEE] bg-[#7A7FEE]/5"
+                          ? "border-[#7A7FEE] ring-2 ring-[#7A7FEE]/30"
                           : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
                       }`}
                     >
-                      <Icon
-                        name={cat.icon}
-                        size={22}
-                        className={selectedCategory?.id === cat.id ? "text-[#7A7FEE]" : "text-gray-400"}
-                      />
-                      <div className="mt-2 font-medium text-black dark:text-white text-sm leading-tight">{cat.label}</div>
+                      <div className="relative aspect-[4/3] overflow-hidden bg-gray-100 dark:bg-gray-800">
+                        <img src={cat.preview} alt={cat.label} className="w-full h-full object-cover" />
+                        {selectedCategory?.id === cat.id && (
+                          <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-[#7A7FEE] flex items-center justify-center">
+                            <Icon name="Check" size={14} className="text-white" />
+                          </div>
+                        )}
+                      </div>
+                      <div className="p-3 flex items-center gap-2">
+                        <Icon
+                          name={cat.icon}
+                          size={18}
+                          className={selectedCategory?.id === cat.id ? "text-[#7A7FEE]" : "text-gray-400"}
+                        />
+                        <div className="font-medium text-black dark:text-white text-sm leading-tight">{cat.label}</div>
+                      </div>
                     </button>
                   ))}
                 </div>
