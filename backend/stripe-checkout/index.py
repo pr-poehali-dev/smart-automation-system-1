@@ -2,6 +2,7 @@ import json
 import os
 import urllib.request
 import urllib.parse
+import urllib.error
 import psycopg2
 
 PLANS = {
@@ -13,6 +14,17 @@ PLANS = {
 
 def handler(event: dict, context) -> dict:
     """Создаёт Stripe Checkout сессию для оплаты тарифа Sestertius"""
+    try:
+        return _handler_impl(event, context)
+    except Exception as exc:
+        return {
+            'statusCode': 500,
+            'headers': {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
+            'body': json.dumps({'error': f'{type(exc).__name__}: {str(exc)}'}),
+        }
+
+
+def _handler_impl(event: dict, context) -> dict:
     method = event.get('httpMethod', 'GET')
 
     if method == 'OPTIONS':
